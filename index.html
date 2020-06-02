@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <my-select @emit1="emit2"></my-select>
+    <keep-alive>
+    <component :is="content">
+    </keep-alive>
+  </div>
+  <script>
+    Vue.component("my-select",{
+      props:["item"],
+      data(){
+        return {
+          list:[
+            {
+              value:"american-food",
+              name:"美式"
+            },{
+              value:"chinese-food",
+              name:"中式"
+            },{
+              value:"another",
+              name:"其他"
+            }
+          ],
+          // list:["good1","good2","good3"],
+          a:"",
+        }
+      },
+      methods:{
+        add1(){
+          this.$emit("emit1",this.a)
+        }
+      },
+      template:
+      `
+      <div>
+      <select name="t1" id="t1" @change="add1" v-model="a">
+        <option value="" disabled>select food</option>
+        <option v-for="item in list" :value="item.value">{{item.name}}</option>
+      </select>
+    </div>
+      `
+    });
+    Vue.component("american-food",{
+      template:
+      `
+      <div>
+      <ul>
+        <li>humber</li>
+        <li>french fries</li>
+      </ul>
+      </div>
+      `
+    });
+    Vue.component("chinese-food",{
+      template:
+      `
+      <div>
+      <ul>
+        <li>bubble tea</li>
+      </ul>
+      </div>
+      `
+    });
+    Vue.component("another",{
+      template:
+      `
+      <div>
+      <textarea name="t31" id="t31" cols="30" rows="10" style="margin: 25px 0px"></textarea>
+      <input type="submit" style="display:block">
+      </div>
+      `
+    })
+  const vm= new Vue({
+    el:"#app",
+    data:{
+      content:"american-food"
+    },
+    methods:{
+      emit2(a){
+        this.content = a
+      }
+    }
+    })
+  </script>
+</body>
+</html>
